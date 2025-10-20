@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class HintManager : MonoBehaviour
@@ -21,14 +19,14 @@ public class HintManager : MonoBehaviour
     public Material trailMaterial; // 흐르는 효과를 줄 Shader (예: Unlit/Transparent)
     public TextMeshProUGUI text;
 
-    float trailWidth = 0.15f; // 선 두께
-    float trailY = 1f; // 높이 (바닥에서 약간 띄움)
+    readonly float trailWidth = 0.15f; // 선 두께
+    readonly float trailY = 1f; // 높이 (바닥에서 약간 띄움)
     Color startColor = Color.cyan; // 시작 색상
     Color endColor = Color.blue; // 끝 색상
-    float scrollSpeed = 1.2f; // 라인 흐름 속도
+    readonly float scrollSpeed = 1.2f; // 라인 흐름 속도
 
     LineRenderer line; // TrailRenderer 대신 LineRenderer 사용
-    List<Vector3> points = new();
+    readonly List<Vector3> points = new();
     int currentStartIndex = 0; // 잘려나간 시작 인덱스
     bool animating = false;
 
@@ -134,10 +132,11 @@ public class HintManager : MonoBehaviour
         GameObject go = new("HintTrail");
         line = go.AddComponent<LineRenderer>();
         line.material = new Material(trailMaterial);
-        line.widthMultiplier = trailWidth;
+        line.textureMode = LineTextureMode.Stretch;
         line.numCapVertices = 8;
         line.numCornerVertices = 8;
         line.alignment = LineAlignment.View;
+        line.widthCurve = AnimationCurve.Linear(0f, trailWidth, 1f, trailWidth);
         line.useWorldSpace = true;
 
         points.Clear();

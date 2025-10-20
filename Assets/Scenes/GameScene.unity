@@ -315,7 +315,7 @@ PrefabInstance:
       objectReference: {fileID: 1920328179}
     - target: {fileID: 1696376386127800032, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
       propertyPath: m_VersionIndex
-      value: 1389
+      value: 1455
       objectReference: {fileID: 0}
     - target: {fileID: 2824678777132918465, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
       propertyPath: m_Mesh
@@ -1217,6 +1217,7 @@ MonoBehaviour:
   hintCount: 3
   trailMaterial: {fileID: 2100000, guid: 40a789d40765d4344bc839b397a7c834, type: 2}
   text: {fileID: 1509245851}
+  isHint: 0
 --- !u!4 &432063817
 Transform:
   m_ObjectHideFlags: 0

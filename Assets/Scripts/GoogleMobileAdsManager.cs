@@ -1,5 +1,5 @@
-using UnityEngine;
 using GoogleMobileAds.Api;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GoogleMobileAdsManager : MonoBehaviour

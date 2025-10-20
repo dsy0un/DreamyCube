@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Collider))]
@@ -29,8 +29,11 @@ public class Player : MonoBehaviour
 
     private Vector2 startTouch;
 
-    public int stepCount = 0; // 현재 스테이지에서의 이동 횟수
+    public int stepCount; // 현재 스테이지에서의 이동 횟수
+
     public Stack<Vector2Int> moveHistory = new(); // 이동 기록 스택
+
+    public TextMeshProUGUI curStepsText;
 
     void Awake()
     {
@@ -83,7 +86,9 @@ public class Player : MonoBehaviour
 
         moveHistory.Clear();
         moveHistory.Push(currentCell);
-        stepCount = 0;
+
+        if (scene.name == "GameScene")
+            stepCount = StageManager.Instance.GetCurrentStage().maxSteps;
     }
 
     void Update()
@@ -103,6 +108,8 @@ public class Player : MonoBehaviour
 
             TryMove(dir);
         }
+
+        curStepsText.text = stepCount.ToString();
     }
 
     public void TryMove(Vector2Int dir)
@@ -159,16 +166,17 @@ public class Player : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "GameScene")
         {
-            stepCount++;
             moveHistory.Push(currentCell);
-            if (stepCount > StageManager.Instance.GetCurrentStage().maxSteps)
+            if (stepCount <= 0)
             {
                 SoundManager.Instance.PlaySFX(SoundManager.SfxTypes.LOSE);
                 StartCoroutine(RewindToStart());
                 yield break;
             }
 
-            HintManager.Instance.PlayerStepped(currentCell);
+            stepCount--;
+
+            // HintManager.Instance.PlayerStepped(currentCell);
         }
 
         // 골 도착 체크
@@ -206,14 +214,14 @@ public class Player : MonoBehaviour
         }
 
         // 리셋
-        stepCount = 0;
+        stepCount = StageManager.Instance.GetCurrentStage().maxSteps;
 
         // moveHistory 초기화
         moveHistory.Clear();
         moveHistory.Push(currentCell);
 
-        if (HintManager.Instance.isHint == true)
-            HintManager.Instance.ShowHint();
+        //if (HintManager.Instance.isHint == true)
+        //    HintManager.Instance.ShowHint();
 
         isMoving = false;
     }

@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
                 SoundManager.Instance.PlaySFX(SoundManager.SfxTypes.CLEAR);
                 StageManager.Instance.NextStage();
 
-                Player.Instance.stepCount = 0;
+                Player.Instance.stepCount = StageManager.Instance.GetCurrentStage().maxSteps;
                 Player.Instance.moveHistory.Clear();
                 Player.Instance.moveHistory.Push(Player.Instance.currentCell);
 

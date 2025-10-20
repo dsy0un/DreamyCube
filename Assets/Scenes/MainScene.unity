@@ -5698,6 +5698,17 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!114 &742510941 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 345176141770994992, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
+  m_PrefabInstance: {fileID: 1325301987}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &745210591
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10164,6 +10175,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8628716425847252786, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
+      propertyPath: curStepsText
+      value: 
+      objectReference: {fileID: 742510941}
     - target: {fileID: 519269987149654558, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
       propertyPath: m_Name
       value: Player
@@ -10174,12 +10189,16 @@ PrefabInstance:
       objectReference: {fileID: 1562929791}
     - target: {fileID: 1696376386127800032, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
       propertyPath: m_VersionIndex
-      value: 1386
+      value: 1395
       objectReference: {fileID: 0}
     - target: {fileID: 2824678777132918465, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1562929791}
+    - target: {fileID: 4377055319400798971, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 50925835}
     - target: {fileID: 5442050875807087715, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2
@@ -10219,6 +10238,10 @@ PrefabInstance:
     - target: {fileID: 5442050875807087715, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6182846928037769258, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
+      propertyPath: m_Name
+      value: CurrentSteps
       objectReference: {fileID: 0}
     - target: {fileID: 8527256621389635079, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
       propertyPath: m_Mesh
