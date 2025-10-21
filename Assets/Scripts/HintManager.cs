@@ -20,15 +20,13 @@ public class HintManager : MonoBehaviour
     public TextMeshProUGUI text;
 
     readonly float trailWidth = 0.15f; // 선 두께
-    readonly float trailY = 1f; // 높이 (바닥에서 약간 띄움)
+    readonly float trailY = 0.55f; // 높이 (바닥에서 약간 띄움)
     Color startColor = Color.cyan; // 시작 색상
     Color endColor = Color.blue; // 끝 색상
-    readonly float scrollSpeed = 1.2f; // 라인 흐름 속도
 
     LineRenderer line; // TrailRenderer 대신 LineRenderer 사용
     readonly List<Vector3> points = new();
     int currentStartIndex = 0; // 잘려나간 시작 인덱스
-    bool animating = false;
 
     public bool isHint = false;
 
@@ -40,13 +38,6 @@ public class HintManager : MonoBehaviour
 
     void Update()
     {
-        if (line && animating && line.material != null)
-        {
-            // UV 스크롤
-            float offset = Time.time * scrollSpeed;
-            line.material.mainTextureOffset = new Vector2(-offset, 0f);
-        }
-
         text.text = hintCount.ToString();
     }
 
@@ -132,7 +123,8 @@ public class HintManager : MonoBehaviour
         GameObject go = new("HintTrail");
         line = go.AddComponent<LineRenderer>();
         line.material = new Material(trailMaterial);
-        line.textureMode = LineTextureMode.Stretch;
+        line.textureMode = LineTextureMode.Tile;
+        line.material.mainTextureScale = new Vector2(0.5f, 0.5f);
         line.numCapVertices = 8;
         line.numCornerVertices = 8;
         line.alignment = LineAlignment.View;
@@ -154,7 +146,6 @@ public class HintManager : MonoBehaviour
         );
         line.colorGradient = grad;
 
-        animating = true;
         currentStartIndex = 0;
         Debug.Log($"힌트 표시: {path.Count}");
     }
@@ -203,7 +194,6 @@ public class HintManager : MonoBehaviour
             line = null;
         }
 
-        animating = false;
         points.Clear();
         currentStartIndex = 0;
         isHint = false;

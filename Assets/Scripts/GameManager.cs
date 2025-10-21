@@ -32,6 +32,19 @@ public class GameManager : MonoBehaviour
         SoundManager.Instance.PlayBGM(SoundManager.BgmTypes.TITLE);
     }
 
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Period))
+        {
+            StageManager.Instance.currentStageIndex += 10;
+            SkipStage();
+        }
+        else if (Input.GetKeyDown(KeyCode.Period))
+        {
+            SkipStage();
+        }
+    }
+
     public void CheckGoalReached(Vector2 goalPos)
     {
         Vector2 playerPos = new(Player.Instance.transform.position.x, Player.Instance.transform.position.z);
@@ -59,5 +72,13 @@ public class GameManager : MonoBehaviour
                 GoogleMobileAdsManager.Instance.LoadRewardedAd();
             }
         }
+    }
+
+    public void SkipStage()
+    {
+        Player.Instance.transform.position = new(StageManager.Instance.GetCurrentStage().goal.x, 1f, StageManager.Instance.GetCurrentStage().goal.y);
+        Player.Instance.currentCell = GridManager.Instance.WorldToGrid(Player.Instance.transform.position);
+        GridManager.Instance.UpdatePos(Player.Instance.gameObject, Player.Instance.currentCell);
+        CheckGoalReached(new Vector2(StageManager.Instance.GetCurrentStage().goal.x, StageManager.Instance.GetCurrentStage().goal.y));
     }
 }

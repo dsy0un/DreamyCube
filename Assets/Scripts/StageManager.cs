@@ -46,9 +46,9 @@ public class StageManager : MonoBehaviour
     private List<StageData> stages;
     public int currentStageIndex;
 
-    private List<GameObject> obstacleInstances = new();
+    readonly List<GameObject> obstacleInstances = new();
     private GameObject goalInstance;
-    private List<GameObject> cubeInstances = new();
+    readonly List<GameObject> cubeInstances = new();
 
     void Awake()
     {
@@ -60,6 +60,11 @@ public class StageManager : MonoBehaviour
     void Start()
     {
         NextStage();
+    }
+
+    public StageData GetCurrentStage()
+    {
+        return stages[Mathf.Clamp(currentStageIndex - 1, 0, stages.Count - 1)];
     }
 
     public void LoadStage(int index)
@@ -133,10 +138,5 @@ public class StageManager : MonoBehaviour
         }
 
         currentStageIndex++;
-    }
-
-    public StageData GetCurrentStage()
-    {
-        return stages[Mathf.Clamp(currentStageIndex - 1, 0, stages.Count - 1)];
     }
 }

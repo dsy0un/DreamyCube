@@ -10179,6 +10179,10 @@ PrefabInstance:
       propertyPath: curStepsText
       value: 
       objectReference: {fileID: 742510941}
+    - target: {fileID: 345176141770994992, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
+      propertyPath: m_text
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 519269987149654558, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
       propertyPath: m_Name
       value: Player
@@ -10189,7 +10193,7 @@ PrefabInstance:
       objectReference: {fileID: 1562929791}
     - target: {fileID: 1696376386127800032, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
       propertyPath: m_VersionIndex
-      value: 1395
+      value: 1401
       objectReference: {fileID: 0}
     - target: {fileID: 2824678777132918465, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
       propertyPath: m_Mesh

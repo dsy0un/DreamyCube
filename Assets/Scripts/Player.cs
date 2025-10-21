@@ -58,6 +58,8 @@ public class Player : MonoBehaviour
 
         moveHistory.Clear();
         moveHistory.Push(currentCell);
+
+        stepCount = 1;
     }
 
     void OnEnable()
@@ -78,7 +80,6 @@ public class Player : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         yLevel = transform.position.y;
-        GridManager.Instance.UnRegister(gameObject);
         currentCell = GridManager.Instance.WorldToGrid(transform.position);
         GridManager.Instance.Register(gameObject, currentCell);
 
