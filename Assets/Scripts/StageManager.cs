@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 [System.Serializable]
@@ -50,6 +51,8 @@ public class StageManager : MonoBehaviour
     private GameObject goalInstance;
     readonly List<GameObject> cubeInstances = new();
 
+    [SerializeField] TextMeshProUGUI curStageText;
+
     void Awake()
     {
         if (instance == null) instance = this;
@@ -60,6 +63,11 @@ public class StageManager : MonoBehaviour
     void Start()
     {
         NextStage();
+    }
+
+    void Update()
+    {
+        curStageText.text = $"<size=0.3>STAGE</size>\n{Mathf.Clamp(currentStageIndex, 1, stages.Count)}";
     }
 
     public StageData GetCurrentStage()

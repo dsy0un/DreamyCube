@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.Log($"{StageManager.Instance.currentStageIndex} 스테이지 클리어");
+                Debug.Log($"{StageManager.Instance.GetCurrentStage().id} 스테이지 클리어");
                 SoundManager.Instance.PlaySFX(SoundManager.SfxTypes.CLEAR);
                 StageManager.Instance.NextStage();
 
