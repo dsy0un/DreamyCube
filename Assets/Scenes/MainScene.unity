@@ -10187,6 +10187,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1318707541059802637, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1696376386127800032, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -10203,6 +10207,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 50925835}
+    - target: {fileID: 4377055319400798971, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
+      propertyPath: m_VertexColorAlwaysGammaSpace
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5442050875807087715, guid: 90fd41edd1dcbe643af7f673ba54df3d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2

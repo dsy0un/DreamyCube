@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
         goalPos = new Vector3(2f, 0f, 0f);
 
         SoundManager.Instance.PlayBGM(SoundManager.BgmTypes.TITLE);
+
+        Application.targetFrameRate = 30;
     }
 
     void Update()
