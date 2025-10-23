@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -8,7 +9,7 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            if (instance == null) instance = new();
+            if (instance == null) instance = FindFirstObjectByType<GameManager>();
             return instance;
         }
     }
@@ -31,19 +32,27 @@ public class GameManager : MonoBehaviour
 
         SoundManager.Instance.PlayBGM(SoundManager.BgmTypes.TITLE);
 
-        Application.targetFrameRate = 30;
+        Application.targetFrameRate = 60;
     }
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Period))
+        var keyboard = Keyboard.current;
+        if (keyboard == null) return;
+
+        // period가 '이번 프레임에' 눌렸는지 확인하고, 그 순간 shift가 눌려있으면 10 증가
+        if (keyboard.periodKey.wasPressedThisFrame)
         {
-            StageManager.Instance.currentStageIndex += 10;
-            SkipStage();
-        }
-        else if (Input.GetKeyDown(KeyCode.Period))
-        {
-            SkipStage();
+            bool shiftPressed = keyboard.leftShiftKey.isPressed || keyboard.rightShiftKey.isPressed;
+            if (shiftPressed)
+            {
+                StageManager.Instance.currentStageIndex += 10;
+                SkipStage();
+            }
+            else
+            {
+                SkipStage();
+            }
         }
     }
 

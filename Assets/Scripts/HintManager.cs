@@ -9,7 +9,7 @@ public class HintManager : MonoBehaviour
     {
         get
         {
-            if (instance == null) instance = new();
+            if (instance == null) instance = FindFirstObjectByType<HintManager>();
             return instance;
         }
     }
@@ -36,7 +36,7 @@ public class HintManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    void Update()
+    void LateUpdate()
     {
         text.text = hintCount.ToString();
     }

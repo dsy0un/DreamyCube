@@ -9,7 +9,7 @@ public class GridManager : MonoBehaviour
     {
         get
         {
-            if (instance == null) instance = new();
+            if (instance == null) instance = FindFirstObjectByType<GridManager>();
             return instance;
         }
     }

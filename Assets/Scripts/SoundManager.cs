@@ -8,7 +8,7 @@ public class SoundManager : MonoBehaviour
     {
         get
         {
-            if (instance == null) instance = new();
+            if (instance == null) instance = FindFirstObjectByType<SoundManager>();
             return instance;
         }
     }

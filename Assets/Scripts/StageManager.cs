@@ -34,7 +34,7 @@ public class StageManager : MonoBehaviour
     {
         get
         {
-            if (instance == null) instance = new();
+            if (instance == null) instance = FindFirstObjectByType<StageManager>();
             return instance;
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Collider))]
@@ -12,7 +13,7 @@ public class Player : MonoBehaviour
     {
         get
         {
-            if (instance == null) instance = new();
+            if (instance == null) instance = FindFirstObjectByType<Player>();
             return instance;
         }
     }
@@ -27,13 +28,13 @@ public class Player : MonoBehaviour
 
     public AnimationCurve moveCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-    private Vector2 startTouch;
-
     public int stepCount; // 현재 스테이지에서의 이동 횟수
-
     public Stack<Vector2Int> moveHistory = new(); // 이동 기록 스택
-
     public TextMeshProUGUI curStepsText;
+
+    private InputAction touchAction;
+    private Vector2 startTouch;
+    private bool isTouching;
 
     void Awake()
     {
@@ -45,6 +46,10 @@ public class Player : MonoBehaviour
         else Destroy(gameObject);
 
         if (cam == null) cam = Camera.main;
+
+        touchAction = new InputAction("Touch", binding: "<Pointer>/press");
+        touchAction.performed += OnTouchPerformed;
+        touchAction.canceled += OnTouchCanceled;
     }
 
     void Start()
@@ -64,17 +69,14 @@ public class Player : MonoBehaviour
 
     void OnEnable()
     {
-        //currentCell = GridManager.Instance.WorldToGrid(transform.position);
-
-        //moveHistory.Clear();
-        //moveHistory.Push(currentCell);
-
-         SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        touchAction.Enable();
     }
 
     void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        touchAction.Disable();
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -92,25 +94,53 @@ public class Player : MonoBehaviour
             stepCount = StageManager.Instance.GetCurrentStage().maxSteps;
     }
 
-    void Update()
+    //void Update()
+    //{
+    //    if (Input.GetMouseButtonDown(0)) startTouch = Input.mousePosition;
+    //    if (Input.GetMouseButtonUp(0))
+    //    {
+    //        Vector2 endTouch = Input.mousePosition;
+    //        Vector2 delta = endTouch - startTouch;
+    //        if (delta.magnitude < minSwipeDistance) return; // 너무 짧으면 무시
+
+    //        Vector2Int dir;
+    //        if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
+    //            dir = new Vector2Int(delta.x > 0 ? 1 : -1, 0); // 좌우
+    //        else
+    //            dir = new Vector2Int(0, delta.y > 0 ? 1 : -1); // 상하
+
+    //        TryMove(dir);
+    //    }
+    //}
+
+    void LateUpdate()
     {
-        if (Input.GetMouseButtonDown(0)) startTouch = Input.mousePosition;
-        if (Input.GetMouseButtonUp(0))
-        {
-            Vector2 endTouch = Input.mousePosition;
-            Vector2 delta = endTouch - startTouch;
-            if (delta.magnitude < minSwipeDistance) return; // 너무 짧으면 무시
-
-            Vector2Int dir;
-            if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
-                dir = new Vector2Int(delta.x > 0 ? 1 : -1, 0); // 좌우
-            else
-                dir = new Vector2Int(0, delta.y > 0 ? 1 : -1); // 상하
-
-            TryMove(dir);
-        }
-
         curStepsText.text = stepCount.ToString();
+    }
+
+    private void OnTouchPerformed(InputAction.CallbackContext ctx)
+    {
+        startTouch = Pointer.current.position.ReadValue();
+        isTouching = true;
+    }
+
+    private void OnTouchCanceled(InputAction.CallbackContext ctx)
+    {
+        if (!isTouching) return;
+
+        Vector2 endTouch = Pointer.current.position.ReadValue();
+        Vector2 delta = endTouch - startTouch;
+        isTouching = false;
+
+        if (delta.magnitude < minSwipeDistance) return;
+
+        Vector2Int dir;
+        if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
+            dir = new Vector2Int(delta.x > 0 ? 1 : -1, 0);
+        else
+            dir = new Vector2Int(0, delta.y > 0 ? 1 : -1);
+
+        TryMove(dir);
     }
 
     public void TryMove(Vector2Int dir)

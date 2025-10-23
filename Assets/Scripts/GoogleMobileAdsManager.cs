@@ -9,7 +9,7 @@ public class GoogleMobileAdsManager : MonoBehaviour
     {
         get
         {
-            if (instance == null) instance = new();
+            if (instance == null) instance = FindFirstObjectByType<GoogleMobileAdsManager>();
             return instance;
         }
     }
