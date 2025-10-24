@@ -9,12 +9,13 @@ public class GoogleMobileAdsManager : MonoBehaviour
     {
         get
         {
-            if (instance == null) instance = FindFirstObjectByType<GoogleMobileAdsManager>();
+            if (instance == null) instance = new();
             return instance;
         }
     }
 
-    string adUnitId;
+    string adInterstitialId;
+    string adRewardedId;
 
     InterstitialAd interstitialAd;
     RewardedAd rewardedAd;
@@ -35,9 +36,11 @@ public class GoogleMobileAdsManager : MonoBehaviour
     void Start()
     {
 #if UNITY_ANDROID
-        adUnitId = "ca-app-pub-3940256099942544/1033173712"; // Test Ad Unit ID for Android
+        adInterstitialId = "ca-app-pub-3940256099942544/1033173712"; // Test Ad Interstitial ID for Android
+        adRewardedId = "ca-app-pub-3940256099942544/5224354917"; // Test Ad Rewarded ID for Android
 #elif UNITY_IPHONE
-        adUnitId = "ca-app-pub-3940256099942544/4411468910"; // Test Ad Unit ID for iOS
+        adInterstitialId = "ca-app-pub-3940256099942544/1033173712"; // Test Ad Interstitial ID for Android
+        adRewardedId = "ca-app-pub-3940256099942544/1033173712"; // Test Ad Rewarded ID for Android
 #endif
 
         LoadInterstitialAd();
@@ -50,7 +53,7 @@ public class GoogleMobileAdsManager : MonoBehaviour
 
         var adRequest = new AdRequest();
 
-        InterstitialAd.Load(adUnitId, adRequest, (InterstitialAd ad, LoadAdError error) =>
+        InterstitialAd.Load(adInterstitialId, adRequest, (InterstitialAd ad, LoadAdError error) =>
         {
             if (error != null)
             {
@@ -137,7 +140,7 @@ public class GoogleMobileAdsManager : MonoBehaviour
 
         var adRequest = new AdRequest();
 
-        RewardedAd.Load(adUnitId, adRequest, (RewardedAd ad, LoadAdError error) =>
+        RewardedAd.Load(adRewardedId, adRequest, (RewardedAd ad, LoadAdError error) =>
         {
             if (error != null)
             {

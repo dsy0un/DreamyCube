@@ -34,12 +34,12 @@ public class StageManager : MonoBehaviour
     {
         get
         {
-            if (instance == null) instance = FindFirstObjectByType<StageManager>();
+            if (instance == null) instance = new();
             return instance;
         }
     }
 
-    public TextAsset puzzleJson;
+    const string puzzleJson = "Json/puzzle_extended";
     public GameObject obstaclePrefab;
     public GameObject goalPrefab;
     public GameObject cubePrefab;
@@ -57,7 +57,8 @@ public class StageManager : MonoBehaviour
     {
         if (instance == null) instance = this;
 
-        stages = JsonHelper.FromJson<StageData>(puzzleJson.text);
+        var jsonFile = Resources.Load<TextAsset>(puzzleJson);
+        stages = JsonHelper.FromJson<StageData>(jsonFile.text);
     }
 
     void Start()

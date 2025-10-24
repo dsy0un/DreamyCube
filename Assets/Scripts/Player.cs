@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     {
         get
         {
-            if (instance == null) instance = FindFirstObjectByType<Player>();
+            if (instance == null) instance = new();
             return instance;
         }
     }
@@ -76,7 +76,7 @@ public class Player : MonoBehaviour
     void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        touchAction.Disable();
+        // touchAction.Disable();
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)

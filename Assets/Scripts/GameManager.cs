@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            if (instance == null) instance = FindFirstObjectByType<GameManager>();
+            if (instance == null) instance = new();
             return instance;
         }
     }
@@ -64,7 +64,16 @@ public class GameManager : MonoBehaviour
         {
             if (SceneManager.GetActiveScene().name == "MainScene")
             {
-                GoogleMobileAdsManager.Instance.ShowInterstitialAd();
+                // GoogleMobileAdsManager.Instance.ShowInterstitialAd();
+                if (SceneManager.GetActiveScene().name == "MainScene")
+                {
+                    Debug.Log("게임 시작");
+                    SceneManager.LoadScene("GameScene");
+
+                    SoundManager.Instance.StopBGM();
+                    SoundManager.Instance.PlayBGM(SoundManager.BgmTypes.GAME);
+                    SoundManager.Instance.PlaySFX(SoundManager.SfxTypes.CLEAR);
+                }
             }
             else
             {

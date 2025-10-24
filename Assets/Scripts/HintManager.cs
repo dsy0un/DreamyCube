@@ -9,7 +9,7 @@ public class HintManager : MonoBehaviour
     {
         get
         {
-            if (instance == null) instance = FindFirstObjectByType<HintManager>();
+            if (instance == null) instance = new();
             return instance;
         }
     }
