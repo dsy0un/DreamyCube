@@ -64,20 +64,12 @@ public class GameManager : MonoBehaviour
         {
             if (SceneManager.GetActiveScene().name == "MainScene")
             {
-                // GoogleMobileAdsManager.Instance.ShowInterstitialAd();
-                if (SceneManager.GetActiveScene().name == "MainScene")
-                {
-                    Debug.Log("게임 시작");
-                    SceneManager.LoadScene("GameScene");
-
-                    SoundManager.Instance.StopBGM();
-                    SoundManager.Instance.PlayBGM(SoundManager.BgmTypes.GAME);
-                    SoundManager.Instance.PlaySFX(SoundManager.SfxTypes.CLEAR);
-                }
+                GoogleMobileAdsManager.Instance.ShowInterstitialAd();
             }
             else
             {
                 Debug.Log($"{StageManager.Instance.GetCurrentStage().id} 스테이지 클리어");
+
                 SoundManager.Instance.PlaySFX(SoundManager.SfxTypes.CLEAR);
                 StageManager.Instance.NextStage();
 
