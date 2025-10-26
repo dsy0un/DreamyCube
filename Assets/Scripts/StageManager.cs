@@ -137,9 +137,14 @@ public class StageManager : MonoBehaviour
 
     public void NextStage()
     {
-        if (currentStageIndex < stages.Count) 
+        if (currentStageIndex < stages.Count)
+        {
             LoadStage(currentStageIndex);
-        else Debug.Log("모든 스테이지 클리어!");
+        }
+        else
+        {
+            Debug.Log("모든 스테이지 클리어!");
+        }
 
         currentStageIndex++;
     }

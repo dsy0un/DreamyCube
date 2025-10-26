@@ -1901,6 +1901,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9b4e6ba6d3393c42b4baff44bf74ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
+  puzzleJson: {fileID: 4900000, guid: ba409f8eef6c22d4cade955f500afc8c, type: 3}
   obstaclePrefab: {fileID: 519269987149654558, guid: fd6d0432c9cf77c429d652647fa271a0, type: 3}
   goalPrefab: {fileID: 2236324712985284869, guid: a0671a97cb7b70048a9503b65b1ad2fe, type: 3}
   cubePrefab: {fileID: 2236324712985284869, guid: aa74eba8b6e681c4da25f5dcab84ab59, type: 3}
@@ -4695,19 +4696,11 @@ PrefabInstance:
     m_TransformParent: {fileID: 1878932455}
     m_Modifications:
     - target: {fileID: 2315289584108803517, guid: 2a25283fafe725342844d38b4e0f747e, type: 3}
-      propertyPath: m_Interactable
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2315289584108803517, guid: 2a25283fafe725342844d38b4e0f747e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2315289584108803517, guid: 2a25283fafe725342844d38b4e0f747e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2315289584108803517, guid: 2a25283fafe725342844d38b4e0f747e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2315289584108803517, guid: 2a25283fafe725342844d38b4e0f747e, type: 3}
@@ -4719,19 +4712,11 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2315289584108803517, guid: 2a25283fafe725342844d38b4e0f747e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2315289584108803517, guid: 2a25283fafe725342844d38b4e0f747e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnClickHintButton
       objectReference: {fileID: 0}
     - target: {fileID: 2315289584108803517, guid: 2a25283fafe725342844d38b4e0f747e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: UIManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2315289584108803517, guid: 2a25283fafe725342844d38b4e0f747e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: UIManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2315289584108803517, guid: 2a25283fafe725342844d38b4e0f747e, type: 3}

@@ -94,6 +94,25 @@ public class Player : MonoBehaviour
             stepCount = StageManager.Instance.GetCurrentStage().maxSteps;
     }
 
+    //void Update()
+    //{
+    //    if (Input.GetMouseButtonDown(0)) startTouch = Input.mousePosition;
+    //    if (Input.GetMouseButtonUp(0))
+    //    {
+    //        Vector2 endTouch = Input.mousePosition;
+    //        Vector2 delta = endTouch - startTouch;
+    //        if (delta.magnitude < minSwipeDistance) return; // 너무 짧으면 무시
+
+    //        Vector2Int dir;
+    //        if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
+    //            dir = new Vector2Int(delta.x > 0 ? 1 : -1, 0); // 좌우
+    //        else
+    //            dir = new Vector2Int(0, delta.y > 0 ? 1 : -1); // 상하
+
+    //        TryMove(dir);
+    //    }
+    //}
+
     void LateUpdate()
     {
         curStepsText.text = stepCount.ToString();
@@ -132,7 +151,7 @@ public class Player : MonoBehaviour
         StartCoroutine(MoveToEdge(dir));
     }
 
-    IEnumerator MoveToEdge(Vector2Int dir)
+    private IEnumerator MoveToEdge(Vector2Int dir)
     {
         isMoving = true;
 
@@ -187,12 +206,14 @@ public class Player : MonoBehaviour
             }
 
             stepCount--;
-        }
 
-        isMoving = false;
+            // HintManager.Instance.PlayerStepped(currentCell);
+        }
 
         // 골 도착 체크
         GameManager.Instance.CheckGoalReached(new Vector2(GameManager.Instance.goalPos.x, GameManager.Instance.goalPos.z));
+
+        isMoving = false;
     }
 
     private IEnumerator RewindToStart()
@@ -229,6 +250,9 @@ public class Player : MonoBehaviour
         // moveHistory 초기화
         moveHistory.Clear();
         moveHistory.Push(currentCell);
+
+        //if (HintManager.Instance.isHint == true)
+        //    HintManager.Instance.ShowHint();
 
         isMoving = false;
     }
