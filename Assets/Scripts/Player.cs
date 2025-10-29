@@ -251,8 +251,8 @@ public class Player : MonoBehaviour
         moveHistory.Clear();
         moveHistory.Push(currentCell);
 
-        //if (HintManager.Instance.isHint == true)
-        //    HintManager.Instance.ShowHint();
+        if (HintManager.Instance.isHint == true)
+            HintManager.Instance.ShowHint();
 
         isMoving = false;
     }

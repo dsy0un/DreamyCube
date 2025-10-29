@@ -1,9 +1,25 @@
 using GoogleMobileAds.Api;
+using System;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GoogleMobileAdsManager : MonoBehaviour
 {
+    [SerializeField] bool isRaunch;
+    [SerializeField] bool isDetailLog;
+    [SerializeField] string[] testDeviceIds;
+    [SerializeField] string bannerIdAndroid;
+    [SerializeField] string bannerIdIos;
+    //[SerializeField] string nativeIdAndroid;
+    //[SerializeField] string nativeIdIos;
+    [SerializeField] string frontIdAndroid;
+    [SerializeField] string frontIdIos;
+    [SerializeField] string rewardedIdAndroid;
+    [SerializeField] string rewardedIdIos;
+
+    SynchronizationContext context;
+
     private static GoogleMobileAdsManager instance;
     public static GoogleMobileAdsManager Instance
     {
@@ -14,12 +30,6 @@ public class GoogleMobileAdsManager : MonoBehaviour
         }
     }
 
-    string adInterstitialId;
-    string adRewardedId;
-
-    InterstitialAd interstitialAd;
-    RewardedAd rewardedAd;
-
     void Awake()
     {
         if (instance == null)
@@ -28,58 +38,131 @@ public class GoogleMobileAdsManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject);
-
-        // Initialize the Google Mobile Ads SDK.
-        MobileAds.Initialize(initStatus => { Debug.Log("Initialized Google Mobile Ads"); });
     }
 
     void Start()
     {
-#if UNITY_ANDROID
-        adInterstitialId = "ca-app-pub-3940256099942544/1033173712"; // Test Ad Interstitial ID for Android
-        adRewardedId = "ca-app-pub-3940256099942544/5224354917"; // Test Ad Rewarded ID for Android
-#elif UNITY_IPHONE
-        adInterstitialId = "ca-app-pub-3940256099942544/1033173712"; // Test Ad Interstitial ID for Android
-        adRewardedId = "ca-app-pub-3940256099942544/1033173712"; // Test Ad Rewarded ID for Android
-#endif
-
-        LoadInterstitialAd();
-    }
-
-    void LoadInterstitialAd()
-    {
-        interstitialAd?.Destroy();
-        interstitialAd = null;
-
-        var adRequest = new AdRequest();
-
-        InterstitialAd.Load(adInterstitialId, adRequest, (InterstitialAd ad, LoadAdError error) =>
+        context = SynchronizationContext.Current;
+        if (IsAndroidAPK() && isRaunch)
         {
-            if (error != null)
-            {
-                Debug.LogError("Failed to load interstitial ad: " + error);
-                return;
-            }
+            isRaunch = false;
+            if (isDetailLog) Debug.Log("Android APK detected, disabling raunch mode.");
+        }
 
-            Debug.Log($"Interstitial ad loaded with response : {ad.GetResponseInfo()}");
+        RequestConfiguration requestConfiguration = new();
+        requestConfiguration.TestDeviceIds.AddRange(testDeviceIds);
+        MobileAds.SetRequestConfiguration(requestConfiguration);
 
-            interstitialAd = ad;
-            InterstitialEventHandlers(interstitialAd);
+        // Initialize the Google Mobile Ads SDK.
+        MobileAds.Initialize(initStatus => 
+        { 
+            Debug.Log("Initialized Google Mobile Ads");
+
+            //if (!string.IsNullOrEmpty(bannerIdAndroid) || !string.IsNullOrEmpty(bannerIdIos))
+            //{ 
+            //    LoadBannerAd();
+            //}
+            LoadBannerAd();
+            //if (!string.IsNullOrEmpty(nativeIdAndroid) || !string.IsNullOrEmpty(nativeIdIos))
+            //{ 
+            //    LoadNativeAd();
+            //}
+            //LoadNativeAd();
+            //if (!string.IsNullOrEmpty(frontIdAndroid) || !string.IsNullOrEmpty(frontIdIos))
+            //{
+            //    LoadFrontAd();
+            //}
+            LoadFrontAd();
+            //if (!string.IsNullOrEmpty(rewardedIdAndroid) || !string.IsNullOrEmpty(rewardedIdIos))
+            //{
+            //    LoadRewardedAd();
+            //}
+            LoadRewardedAd();
         });
     }
 
-    public void ShowInterstitialAd()
+    bool IsAndroidAPK()
     {
-        if (interstitialAd != null && interstitialAd.CanShowAd())
+        string bundleId = Application.identifier;
+        return bundleId.EndsWith(".apk");
+    }
+
+    #region Banner Ad
+
+    BannerView bannerView;
+
+    public void LoadBannerAd()
+    {
+#if UNITY_ANDROID
+        string bannerId = bannerIdAndroid;
+        string bannerIdTest = "ca-app-pub-3940256099942544/6300978111";
+#elif UNITY_IPHONE || UNITY_IOS
+        string bannerId = bannerIdIos;
+        string bannerIdTest = "ca-app-pub-3940256099942544/2934735716";
+#endif
+        string finalBannerId = isRaunch ? bannerId : bannerIdTest;
+
+        bannerView?.Destroy();
+
+        bannerView = new BannerView(finalBannerId, AdSize.Banner, AdPosition.Bottom);
+        bannerView.LoadAd(new AdRequest());
+
+        if (isDetailLog) Debug.Log("Banner ad loading...");
+    }
+
+    public void ShowBannerAd(bool isShow)
+    {
+        if (bannerView != null)
         {
-            Debug.Log("Showing interstitial ad.");
-            interstitialAd.Show();
+            if (isShow) bannerView.Show();
+            else bannerView.Hide();
         }
         else
         {
-            Debug.LogError("Ad not ready to be shown.");
-            LoadInterstitialAd();
+            if (isDetailLog) Debug.LogError("Banner ad not loaded.");
+            if (isShow) LoadBannerAd();
         }
+    }
+    #endregion
+
+    #region Front Ad
+
+    InterstitialAd frontAd;
+
+    public void LoadFrontAd()
+    {
+#if UNITY_ANDROID
+        string frontId = frontIdAndroid;
+        string frontIdTest = "ca-app-pub-3940256099942544/1033173712";
+#elif UNITY_IPHONE || UNITY_IOS
+        string frontId = frontIdIos;
+        string frontIdTest = "ca-app-pub-3940256099942544/4411468910";
+#endif
+        string finalFrontId = isRaunch ? frontId : frontIdTest;
+
+        InterstitialAd.Load(finalFrontId, new AdRequest(), (InterstitialAd ad, LoadAdError error) =>
+        {
+            if (ad == null || error != null)
+            {
+                if (isDetailLog) Debug.LogWarning($"Interstitial ad failed to load: {error?.GetMessage()}");
+                return;
+            }
+
+            if (isDetailLog) Debug.Log("Interstitial ad loaded.");
+            frontAd = ad;
+            InterstitialEventHandlers(ad);
+        });
+    }
+
+    public void ShowFrontAd()
+    {
+        if (frontAd != null && frontAd.CanShowAd()) frontAd.Show();
+        else
+        {
+            if (isDetailLog) Debug.LogError("Interstitial ad cannot be shown.");
+        }
+
+        LoadFrontAd();
     }
 
     void InterstitialEventHandlers(InterstitialAd ad)
@@ -122,6 +205,7 @@ public class GoogleMobileAdsManager : MonoBehaviour
                 SoundManager.Instance.PlayBGM(SoundManager.BgmTypes.GAME);
                 SoundManager.Instance.PlaySFX(SoundManager.SfxTypes.CLEAR);
 
+                LoadBannerAd();
                 LoadRewardedAd();
             }
         };
@@ -132,43 +216,58 @@ public class GoogleMobileAdsManager : MonoBehaviour
             Debug.LogError("Interstitial ad failed to open full screen content: " + error);
         };
     }
+    #endregion
+
+    #region Rewarded Ad
+
+    RewardedAd rewardedAd;
 
     public void LoadRewardedAd()
     {
-        rewardedAd?.Destroy();
-        rewardedAd = null;
+#if UNITY_ANDROID
+        string rewardedId = rewardedIdAndroid;
+        string rewardedIdTest = "ca-app-pub-3940256099942544/5224354917";
+#elif UNITY_IPHONE || UNITY_IOS
+		string rewardedId = rewardIdIos;
+		string rewardedIdTest = "ca-app-pub-3940256099942544/1712485313";
+#endif
+        string finalRewardedId = isRaunch ? rewardedId : rewardedIdTest;
 
-        var adRequest = new AdRequest();
-
-        RewardedAd.Load(adRewardedId, adRequest, (RewardedAd ad, LoadAdError error) =>
+        RewardedAd.Load(finalRewardedId, new AdRequest(), (RewardedAd ad, LoadAdError error) =>
         {
-            if (error != null)
+            if (ad == null || error != null)
             {
-                Debug.LogError("Failed to load rewarded ad: " + error);
+                if (isDetailLog) Debug.LogWarning($"Rewarded ad failed to load: {error?.GetMessage()}");
                 return;
             }
-            Debug.Log($"Rewarded ad loaded with response : {ad.GetResponseInfo()}");
 
+            if (isDetailLog) Debug.Log("Rewarded ad loaded.");
             rewardedAd = ad;
-            RewardedEventHandlers(rewardedAd);
+            RewardedEventHandlers(ad);
         });
     }
 
-    public void ShowRewardedAd()
+    public void ShowRewardedAd(Action<bool> completed)
     {
         if (rewardedAd != null && rewardedAd.CanShowAd())
         {
-            Debug.Log("Showing interstitial ad.");
             rewardedAd.Show((Reward reward) =>
             {
-                HintManager.Instance.ShowHint();
+                context.Post(o =>
+                {
+                    if (isDetailLog) Debug.Log($"Rewarded ad granted a reward: {reward.Amount}");
+                    HintManager.Instance.ShowHint();
+                    completed?.Invoke(true);
+                }, null);
             });
         }
         else
         {
-            Debug.LogError("Ad not ready to be shown.");
-            LoadRewardedAd();
+            if (isDetailLog) Debug.LogError("Rewarded ad cannot be shown.");
+            completed?.Invoke(false);
         }
+
+        LoadRewardedAd();
     }
 
     void RewardedEventHandlers(RewardedAd ad)
@@ -203,4 +302,5 @@ public class GoogleMobileAdsManager : MonoBehaviour
             Debug.LogError("Rewarded ad failed to open full screen content: " + error);
         };
     }
+    #endregion
 }

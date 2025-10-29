@@ -64,16 +64,16 @@ public class GameManager : MonoBehaviour
         {
             if (SceneManager.GetActiveScene().name == "MainScene")
             {
-                // GoogleMobileAdsManager.Instance.ShowInterstitialAd();
-                if (SceneManager.GetActiveScene().name == "MainScene")
-                {
-                    Debug.Log("게임 시작");
-                    SceneManager.LoadScene("GameScene");
+                GoogleMobileAdsManager.Instance.ShowFrontAd();
+                //if (SceneManager.GetActiveScene().name == "MainScene")
+                //{
+                //    Debug.Log("게임 시작");
+                //    SceneManager.LoadScene("GameScene");
 
-                    SoundManager.Instance.StopBGM();
-                    SoundManager.Instance.PlayBGM(SoundManager.BgmTypes.GAME);
-                    SoundManager.Instance.PlaySFX(SoundManager.SfxTypes.CLEAR);
-                }
+                //    SoundManager.Instance.StopBGM();
+                //    SoundManager.Instance.PlayBGM(SoundManager.BgmTypes.GAME);
+                //    SoundManager.Instance.PlaySFX(SoundManager.SfxTypes.CLEAR);
+                //}
             }
             else
             {
@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
                 HintManager.Instance.ClearHints();
 
                 GoogleMobileAdsManager.Instance.LoadRewardedAd();
+                GoogleMobileAdsManager.Instance.LoadBannerAd();
             }
         }
     }

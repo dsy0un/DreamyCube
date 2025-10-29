@@ -6711,6 +6711,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f7d2bf726450f49857d707cde8ae53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GoogleMobileAdsManager
+  isRaunch: 0
+  isDetailLog: 1
+  testDeviceIds: []
+  bannerIdAndroid: 
+  bannerIdIos: 
+  frontIdAndroid: 
+  frontIdIos: 
+  rewardedIdAndroid: 
+  rewardedIdIos: 
 --- !u!4 &887719643
 Transform:
   m_ObjectHideFlags: 0

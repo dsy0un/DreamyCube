@@ -13,7 +13,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            GoogleMobileAdsManager.Instance.ShowRewardedAd();
+            GoogleMobileAdsManager.Instance.ShowRewardedAd(_ => {});
         }
     }
 }
