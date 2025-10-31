@@ -1,0 +1,8 @@
+<linker>
+  <assembly fullname="GoogleMobileAds">
+    <type fullname="GoogleMobileAds.Api.MobileAds" preserve="all"/>
+    <type fullname="GoogleMobileAds.Api.InterstitialAd" preserve="all"/>
+    <type fullname="GoogleMobileAds.Api.RewardedAd" preserve="all"/>
+    <type fullname="GoogleMobileAds.Common.**" preserve="all"/>
+  </assembly>
+</linker>

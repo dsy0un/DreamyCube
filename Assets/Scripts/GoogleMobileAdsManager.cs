@@ -38,24 +38,14 @@ public class GoogleMobileAdsManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject);
-    }
-
-    void Start()
-    {
-        context = SynchronizationContext.Current;
-        if (IsAndroidAPK() && isRaunch)
-        {
-            isRaunch = false;
-            if (isDetailLog) Debug.Log("Android APK detected, disabling raunch mode.");
-        }
 
         RequestConfiguration requestConfiguration = new();
         requestConfiguration.TestDeviceIds.AddRange(testDeviceIds);
         MobileAds.SetRequestConfiguration(requestConfiguration);
 
         // Initialize the Google Mobile Ads SDK.
-        MobileAds.Initialize(initStatus => 
-        { 
+        MobileAds.Initialize(initStatus =>
+        {
             Debug.Log("Initialized Google Mobile Ads");
 
             //if (!string.IsNullOrEmpty(bannerIdAndroid) || !string.IsNullOrEmpty(bannerIdIos))
@@ -79,6 +69,16 @@ public class GoogleMobileAdsManager : MonoBehaviour
             //}
             LoadRewardedAd();
         });
+    }
+
+    void Start()
+    {
+        context = SynchronizationContext.Current;
+        if (IsAndroidAPK() && isRaunch)
+        {
+            isRaunch = false;
+            if (isDetailLog) Debug.Log("Android APK detected, disabling raunch mode.");
+        }
     }
 
     bool IsAndroidAPK()
@@ -154,12 +154,13 @@ public class GoogleMobileAdsManager : MonoBehaviour
         });
     }
 
-    public void ShowFrontAd()
+    public void ShowFrontAd(Action onSkip)
     {
         if (frontAd != null && frontAd.CanShowAd()) frontAd.Show();
         else
         {
             if (isDetailLog) Debug.LogError("Interstitial ad cannot be shown.");
+            onSkip.Invoke();
         }
 
         LoadFrontAd();
